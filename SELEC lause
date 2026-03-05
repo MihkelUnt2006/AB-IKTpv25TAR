@@ -1,0 +1,80 @@
+CREATE DATABASE MIHKELUNTTAR;
+use MIHKELUNTTAR;
+create table telefon (
+	TelefonID INT PRIMARY KEY,
+	tootja VARCHAR(50) not null,
+	telefonMudel1 VARCHAR(50),
+	Hind money,
+	v_aasta int,
+	oSystem VARCHAR(10)
+);
+select* from telefon
+ALTER TABLE telefon ALTER COLUMN oSystem varchar(30)
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (1, 'Sony', 'Sony Xperia 1', 19.99, 2019, 'Android 9.0, up to Android 11');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (2, 'LG', 'LG T515 Cookie Duo', 4.29, 2011, 'Feature phone');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (3, 'Sagem', 'Sagem MY V-76', 12.99, 2005, 'Feature phone');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (4, 'Sony', 'Sony Xperia Z1', 49.99, 2013, 'Android 4.2, up to 5.1');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (5, 'Sagem', 'Sagem MY C-3b', 22.99, 2004, 'Feature phone');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (6, 'Spice', 'Spice Mi-310', 34.99, 2011, 'Android 2.2');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (7, 'Meizu', 'Meizu MX', 29.99, 2012, 'Android 2.3.5, up to 4.0');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (8, 'BLU', 'BLU Studio 5.5', 3.99, 2013, 'Android 4.2');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (9, 'Samsung', 'Samsung Z3', 59.99, 2015, 'Tizen 2.3, up to 2.4');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (10, 'HTC', 'HTC Desire 612', 1.29, 2014, 'Android 4.4.2, Sense UI 5.5');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (11, 'Allview', 'Allview V2 Viper', 12.99, 2015, 'Android 5.0');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (12, 'Samsung', 'Samsung Galaxy On6', 1.89, 2018, 'Android 8.0');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (13, 'ZTE', 'ZTE Blade 10 Prime', 29.99, 2019, 'Android 9.0');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (14, 'Lenovo', 'Lenovo A335', 5.49, 2012, 'Feature phone');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (15, 'Sendo', 'Sendo M550', 3.59, 2003, 'Feature phone');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (16, 'Motorola', 'Motorola V560', 59.99, 0, 'Feature phone');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (17, 'Samsung', 'Samsung Galaxy Pop Plus S5570i', 24.99, 2012, 'Android 2.2, up to 2.3');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (18, 'HP', 'HP TouchPad 4G', 22.99, 0, 'HP webOS 3.0');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (19, 'Xiaomi', 'Xiaomi Mi 5s Plus', 39.99, 2016, 'Android 6.0, up to 7.0, MIUI 10');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (20, 'Huawei', 'Huawei nova 5', 24.99, 2019, 'Android 9.0, EMUI 9.1');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (21, 'Samsung', 'Samsung D300', 4.19, 2006, 'Feature phone');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (22, 'Oppo', 'Oppo A7', 64.99, 2018, 'Android 8.1, ColorOS 5.2');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (23, 'Micromax', 'Micromax Canvas Win W121', 3.99, 2014, 'Microsoft Windows Phone 8.1');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (24, 'ZTE', 'ZTE N721', 2.49, 2011, 'Android OS');
+insert into telefon (TelefonID, tootja, telefonMudel1, Hind, v_aasta, oSystem) values (25, 'Celkon', 'Celkon A90', 8.99, 2012, 'Android 2.3.5');
+SELECT tootja, telefonMudel1 AS mudel FROM telefon
+Select tootja, telefonMudel1 AS mudel, hind 
+from telefon 
+ORDER BY hind 
+SELECT tootja, telefonMudel1 AS mudel, hind
+from telefon
+order by hind desc;
+SELECT telefonMudel1, hind
+from telefon
+where hind > 35
+order by hind ;
+SELECT telefonMudel1, hind
+from telefon
+where hind BETWEEN 10 and 15
+order by hind ;
+SELECT telefonMudel1, hind
+from telefon 
+WHERE hind >=10 and hind <=25
+ORDER by hind
+Select DIstinct oSystem from telefon;
+Select tootja, telefonMudel1
+FROM telefon 
+WHERE tootja LIKE 'Sony';
+Select tootja, telefonMudel1
+FROM telefon 
+WHERE tootja IN ('Sony', 'Samsung', 'Apple');
+Select tootja, telefonMudel1
+FROM telefon 
+WHERE tootja Like 'Sony' or tootja LIKE 'Samsung' or tootja LIKE 'Apple';
+SELECT tootja, telefonMudel1
+from telefon 
+Where telefonMudel1 Like 'S%';
+
+SELECT AVG(v_aasta) AS 'Keskmine Aasta'
+FROM telefon;
+SELECT Count (*) AS 'ÜldKogus'
+FROM telefon;
+SELECT tootja, Count(*) AS 'ÜldKogus'
+FROM telefon
+Group By tootja; 
+Select top 6 tootja, Hind 
+from telefon
+order by hind DESC
