@@ -1,0 +1,164 @@
+CREATE DATABASE MIHKELTAR
+USE MIHKELTAR
+
+CREATE TABLE firma(
+    firmaID INT NOT NULL PRIMARY KEY identity,
+    firmanimi VARCHAR(20),
+    aadress VARCHAR(20),
+    telefon VARCHAR(20)
+);
+
+Select * from firma
+CREATE TABLE praktikajuhendaja (
+    praktikajuhendajaID INT PRIMARY KEY identity,
+    eesnimi VARCHAR(50) NOT NULL,
+    perekonnanimi VARCHAR(50) NOT NULL,
+    synniaeg DATE,
+    telefon VARCHAR(20)
+);
+select * from praktikajuhendaja
+
+CREATE TABLE praktikabaas(
+    praktikabaasID INT NOT NULL PRIMARY KEY identity,
+    firmaID INT,
+    praktikatingimused VARCHAR(20),
+    arvutiprogramm VARCHAR(20),
+    juhendajaID INT,
+    FOREIGN KEY (firmaID) REFERENCES firma(firmaID),
+    FOREIGN KEY (juhendajaID) REFERENCES praktikajuhendaja(praktikajuhendajaID)
+);
+select * from praktikabaas
+
+INSERT INTO firma (firmanimi, aadress, telefon) VALUES
+('TechSoft', 'Tallinn', '+3725551111'),
+('DataPro', 'Tartu', '+3725552222'),
+('NetGroup', 'Pärnu', '+3725553333'),
+('CodeLab', 'Narva', '+3725554444'),
+('ITWorks', 'Viljandi', '+3725555555'),
+('SoftTech', 'Rakvere', '+3725556666');
+INSERT INTO praktikajuhendaja (eesnimi, perekonnanimi, synniaeg, telefon) VALUES
+('Mart', 'Tamm', '1980-05-12', '+3725011111'),
+('Kati', 'Kask', '1990-08-23', '+3725022222'),
+('Jaan', 'Saar', '1985-03-15', '+3725033333'),
+('Liis', 'Lepp', '1992-11-30', '+3725044444'),
+('Peeter', 'Põld', '1978-07-07', '+3725055555'),
+('Anne', 'Mägi', '1988-01-19', '+3725066666');
+INSERT INTO praktikabaas (firmaID, praktikatingimused, arvutiprogramm, juhendajaID) VALUES
+(1, 'Head', 'Java', 1),
+(2, 'Väga head', 'Python', 2),
+(3, 'Rahuldavad', 'C#', 3),
+(4, 'Head', 'JavaScript', 4),
+(5, 'Keskmised', 'PHP', 5),
+(6, 'Head', 'SQL', 6),
+(1, 'Väga head', 'C++', 2),
+(2, 'Head', 'HTML', 3);
+select * from firma
+select * from praktikajuhendaja
+select * from praktikabaas
+sELECT * FROM firma
+WHERE firmanimi LIKE '%a%';
+SELECT firma.firmanimi, praktikabaas.praktikatingimused, praktikabaas.arvutiprogramm
+FROM praktikabaas
+JOIN firma ON firma.firmaID = praktikabaas.firmaID
+ORDER BY firma.firmanimi;
+SELECT firma.firmanimi, COUNT(praktikabaas.praktikabaasID) AS kogus
+FROM praktikabaas
+JOIN firma ON firma.firmaID = praktikabaas.firmaID
+GROUP BY firma.firmanimi;
+SELECT *
+FROM praktikajuhendaja
+WHERE MONTH(synniaeg) = 9 
+   OR MONTH(synniaeg) = 10 
+   OR MONTH(synniaeg) = 11;
+   SELECT *
+FROM praktikajuhendaja
+WHERE MONTH(synniaeg) IN (9, 10, 11);
+SELECT 
+    praktikajuhendaja.eesnimi,
+    praktikajuhendaja.perekonnanimi,
+    COUNT(praktikabaas.praktikabaasID) AS praktikakohti
+FROM praktikajuhendaja
+LEFT JOIN praktikabaas 
+    ON praktikajuhendaja.praktikajuhendajaID = praktikabaas.juhendajaID
+GROUP BY praktikajuhendaja.eesnimi, praktikajuhendaja.perekonnanimi;
+ALTER TABLE praktikajuhendaja
+ADD palk DECIMAL(10,2);
+select * from praktikajuhendaja
+UPDATE praktikajuhendaja SET palk = 1500 WHERE praktikajuhendajaID = 1;
+UPDATE praktikajuhendaja SET palk = 1800 WHERE praktikajuhendajaID = 2;
+UPDATE praktikajuhendaja SET palk = 2000 WHERE praktikajuhendajaID = 3;
+UPDATE praktikajuhendaja SET palk = 1700 WHERE praktikajuhendajaID = 4;
+UPDATE praktikajuhendaja SET palk = 2200 WHERE praktikajuhendajaID = 5;
+UPDATE praktikajuhendaja SET palk = 1600 WHERE praktikajuhendajaID = 6;
+SELECT AVG(palk) AS keskmine_palk
+FROM praktikajuhendaja;
+SELECT SUM(palk) AS kogupalk
+FROM praktikajuhendaja;
+SELECT eesnimi, perekonnanimi, palk
+FROM praktikajuhendaja
+WHERE palk > (SELECT AVG(palk) FROM praktikajuhendaja);
+CREATE VIEW vw_firma_praktikakohad AS
+SELECT 
+    firma.firmanimi,
+    COUNT(praktikabaas.praktikabaasID) AS praktikakohti
+FROM praktikabaas
+JOIN firma ON firma.firmaID = praktikabaas.firmaID
+GROUP BY firma.firmanimi;
+SELECT * FROM vw_firma_praktikakohad;
+CREATE VIEW vw_sugisel_sundinud_juhendajad AS
+SELECT *
+FROM praktikajuhendaja
+WHERE MONTH(synniaeg) IN (9, 10, 11);
+SELECT * FROM vw_sugisel_sundinud_juhendajad;
+CREATE PROCEDURE lisa_firma
+    @firmanimi VARCHAR(20),
+    @aadress VARCHAR(20),
+    @telefon VARCHAR(20)
+AS
+BEGIN
+    INSERT INTO firma (firmanimi, aadress, telefon)
+    VALUES (@firmanimi, @aadress, @telefon);
+END;
+EXEC lisa_firma 'UusFirma', 'Tallinn', '+3725000000';
+select * from firma
+CREATE PROCEDURE lisa_veerg_email
+AS
+BEGIN
+    ALTER TABLE praktikajuhendaja
+    ADD email VARCHAR(50);
+END;
+EXEC lisa_veerg_email;
+select * from praktikajuhendaja
+CREATE PROCEDURE keskmine_palk
+AS
+BEGIN
+    SELECT AVG(palk) AS keskmine_palk
+    FROM praktikajuhendaja;
+END;
+EXEC keskmine_palk;
+SELECT 
+    eesnimi,
+    perekonnanimi,
+    synniaeg,
+    dbo.fnComputeAge(CAST(synniaeg AS DATETIME)) AS vanus
+FROM praktikajuhendaja;
+CREATE FUNCTION fnComputeAge(@DOB DATETIME)
+RETURNS INT
+AS
+BEGIN
+    RETURN DATEDIFF(YEAR, @DOB, GETDATE()) 
+           - CASE WHEN DATEADD(YEAR, DATEDIFF(YEAR, @DOB, GETDATE()), @DOB) > GETDATE() THEN 1 ELSE 0 END;
+END;
+CREATE FUNCTION dbo.CalculateAge(@DOB DATE)
+RETURNS INT
+AS
+BEGIN
+    RETURN DATEDIFF(YEAR, @DOB, GETDATE()) 
+           - CASE WHEN DATEADD(YEAR, DATEDIFF(YEAR, @DOB, GETDATE()), @DOB) > GETDATE() THEN 1 ELSE 0 END;
+END;
+SELECT 
+    eesnimi,
+    perekonnanimi,
+    synniaeg,
+    dbo.CalculateAge(synniaeg) AS vanus
+FROM praktikajuhendaja;
