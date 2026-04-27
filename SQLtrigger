@@ -11,6 +11,91 @@ Id int primary key identity(1,1),
 kuupaev datetime,
 andmed TEXT);
 
+drop table linnad
+--table maakonnad
+create table maakonnad(
+maakondId int primary key identity(1,1),
+maakondNimi varchar(25) unique);
+
+Alter table linnad add maakondId int;
+select * from linnad;
+Alter table linnad add constraint fk_maakond
+Foreign key (maakondId) References maakonnad(maakondId);
+
+insert into maakonnad
+values ('Harjumaa'), ('Pärnumaa'), ('Virumaa');
+select * from maakonnad;
+
+Insert into linnad (linnanimi,rahvaarv, maakondId)
+values ('Tallinn',600000, 1),('Rakvere', 15000, 3);
+select * from linnad, maakonnad where linnad.maakondId=maakonnad.maakondId;
+
+select * from linnad inner join maakonnad
+on linnad.maakondId=maakonnad.maakondId;
+
+update linnad set maakondId = 1 ;
+
+-- trigger mis jälgib kaks seostatud tabelit
+Create TRIGGER linnaLisamine2
+on linnad
+for insert
+As
+insert into logi(kuupaev, andmed, kasutaja)
+Select
+getdate(),
+concat('Lisatud linn: ', inserted.linnanimi, ', ', inserted.rahvaarv, ', ', m.maakondNimi),
+SYSTEM_USER
+from inserted inner join maakond m
+on inserted.maakondId=m.maakondId;
+
+drop trigger linnaLisamine2
+
+insert into linnad (linnanimi, rahvaarv, maakondId)
+values ('Pärnu', 10000, 2);
+
+select * from logi
+
+CREATE TRIGGER linnaKustutamine1
+on linnad
+For delete
+as
+insert into logi(kuupaev, andmed, kasutaja)
+select
+GETDATE(),
+CONCAT ('kustutatud linn: ', deleted.linnanimi,', ', deleted.rahvaarv, ', ' ,m.maakondNimi),
+SYSTEM_USER
+from  deleted  inner join maakonnad m
+on deleted.maakondId=m.maakondId;
+
+delete from linnad where linnId=1;
+
+select * from logi 
+
+CREATE TRIGGER linnaUeendamine1
+on linnad
+For update
+as
+insert into logi(kuupaev, andmed, kasutaja)
+select
+GETDATE(),
+CONCAT (
+'vana linna andmed: ',  deleted.linnanimi,', ', deleted.rahvaarv, ', ' ,m1.maakondNimi,
+ '|| uuendatud linn: ', inserted.linnanimi, ', ', inserted.rahvaarv, ', ', m2.maakondNimi),
+SYSTEM_USER
+from  deleted
+inner join inserted on deleted.linnId=inserted.linnId
+inner join maakonnad m1 on deleted.maakondId=m1.maakondId
+inner join maakonnad m2 on inserted.maakondId=m2.maakondId;
+
+select * from linnad 
+select * from maakonnad
+update linnad set maakondId=1 where linnId=2;
+
+select * from logi ;
+update linnad set maakondId=1,linnanimi='uus Paide' where linnid=2
+
+
+
 --Insert Triger
 Create TRIGGER linnaLisamine
 on linnad
@@ -29,7 +114,7 @@ Select * from logi;
 --kustutame triger
 drop trigger linnaLisamine;
 
-Create TRIGGER linnaLisamine
+Create TRIGGER linnaLisamine1
 on linnad
 for insert
 As
@@ -117,3 +202,4 @@ values('Paldiski', 50000);
 Delete from linnad Where linnId=5
 select * from linnad
 Select * from logi
+select * from maakonnad
